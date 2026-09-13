@@ -120,66 +120,6 @@
     line-height: 1.7;
   }
 
-  /* ===== BENEFITS ===== */
-  .benefits {
-    margin-bottom: 28px;
-  }
-
-  .benefits__title {
-    font-family: var(--font-d);
-    font-size: 28px;
-    letter-spacing: 1px;
-    margin-bottom: 16px;
-  }
-
-  .benefits__list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .benefit {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--r);
-    padding: 16px 18px;
-    font-size: 15px;
-    color: var(--gray-1);
-  }
-
-  .benefit__icon {
-    flex: none;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0,202,223,0.14);
-    color: var(--cyan);
-    font-size: 13px;
-    margin-top: 1px;
-  }
-
-  /* самый важный пункт — про скидку — подсвечен оранжевым */
-  .benefit--highlight {
-    background: linear-gradient(135deg, rgba(232,89,24,0.14), rgba(232,89,24,0.04));
-    border-color: rgba(232,89,24,0.4);
-  }
-
-  .benefit--highlight .benefit__icon {
-    background: rgba(232,89,24,0.2);
-    color: var(--orange);
-  }
-
-  .benefit--highlight strong {
-    color: var(--orange);
-  }
-
   /* ===== NOTICE PLATE ===== */
   .notice {
     display: flex;
@@ -480,27 +420,8 @@
     <img src="images/logo-7kteam.png" alt="7K TEAM" class="hero__logo" />
     <p class="hero__eyebrow">Волейбольные кэмпы</p>
     <h1 class="hero__title">Предзапись на кэмп <span class="hero__title-accent">7K TEAM</span></h1>
-    <p class="hero__subtitle">Заполнив анкету, вы первыми получите всю информацию о выезде, а также скидку на программу. Это ни к чему вас не обязывает.</p>
+    <p class="hero__subtitle">Заполнив анкету, вы первыми получите всю информацию о выезде, а также скидку на программу.</p>
   </header>
-
-  <!-- ЧТО ВЫ ПОЛУЧИТЕ -->
-  <section class="benefits">
-    <h2 class="benefits__title">Что вы получите</h2>
-    <ul class="benefits__list">
-      <li class="benefit">
-        <span class="benefit__icon">i</span>
-        <span>Всю ключевую информацию о поездке — в первую очередь</span>
-      </li>
-      <li class="benefit">
-        <span class="benefit__icon">★</span>
-        <span>Возможность забронировать место раньше остальных</span>
-      </li>
-      <li class="benefit benefit--highlight">
-        <span class="benefit__icon">%</span>
-        <span><strong>Приятную скидку</strong> для всех, кто заполнил анкету</span>
-      </li>
-    </ul>
-  </section>
 
   <!-- ПЛАШКА-НАПОМИНАНИЕ -->
   <div class="notice">
