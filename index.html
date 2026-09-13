@@ -222,6 +222,27 @@
     transform: rotate(40deg);
   }
 
+  /* яркая плашка-привлекатель, например NEW — показывается только у карточек с camp.badge */
+  .camp-card__badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--on-lime);
+    background: var(--lime);
+    border-radius: 20px;
+    padding: 3px 10px;
+    box-shadow: 0 0 14px rgba(191,255,0,0.45);
+  }
+
+  /* резервируем место под плашку, чтобы длинный заголовок не наезжал на неё */
+  .camp-card.has-badge .camp-card__title {
+    padding-right: 56px;
+  }
+
   .camp-card__title {
     font-family: var(--font-d);
     font-weight: 600;
@@ -522,6 +543,7 @@
     // Список кэмпов — карточки на странице генерируются из этого массива.
     // value должно ТОЧНО совпадать с текстом варианта ответа в Google Форме.
     // price можно оставить пустой строкой '' — тогда строка с ценой на карточке не показывается.
+    // badge — необязательное поле, например 'NEW'; если задано, в углу карточки появляется яркая плашка.
     camps: [
       {
         value: 'Вьетнам, Дананг, 13–24 февраля',
@@ -530,14 +552,14 @@
         price: ''
       },
       {
-        value: 'Таиланд, 1 смена, 27 февраля – 10 марта',
-        title: 'Таиланд · 1 смена',
+        value: 'Таиланд, Пхукет, 1 смена, 27 февраля – 10 марта',
+        title: 'Пхукет, Таиланд · 1 смена',
         meta: '27 февраля – 10 марта',
         price: ''
       },
       {
-        value: 'Таиланд, 2 смена, 13–24 марта',
-        title: 'Таиланд · 2 смена',
+        value: 'Таиланд, Пхукет, 2 смена, 13–24 марта',
+        title: 'Пхукет, Таиланд · 2 смена',
         meta: '13–24 марта',
         price: ''
       },
@@ -557,7 +579,8 @@
         value: 'Волейбольное путешествие, новая страна, 11–25 сентября',
         title: 'Волейбольное путешествие — новая страна',
         meta: '11–25 сентября · место уточняется 🔜',
-        price: ''
+        price: '',
+        badge: 'NEW'
       },
       {
         value: 'Сочи, Спорт Инн, 2–10 октября',
@@ -593,9 +616,10 @@
   // Рисуем карточки кэмпов из CONFIG.camps
   function renderCamps() {
     campsGrid.innerHTML = CONFIG.camps.map((camp, i) => `
-      <label class="camp-card" data-index="${i}">
+      <label class="camp-card${camp.badge ? ' has-badge' : ''}" data-index="${i}">
         <input type="checkbox" class="camp-card__input" value="${escapeHtml(camp.value)}" />
         <span class="camp-card__mark" aria-hidden="true"></span>
+        ${camp.badge ? `<span class="camp-card__badge">${escapeHtml(camp.badge)}</span>` : ''}
         <span class="camp-card__title">${escapeHtml(camp.title)}</span>
         <span class="camp-card__meta">${escapeHtml(camp.meta)}</span>
         ${camp.price ? `<span class="camp-card__price">${escapeHtml(camp.price)}</span>` : ''}
