@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Предзапись на волейбольный кэмп</title>
+<meta name="description" content="Анкета предзаписи на волейбольные кэмпы — выберите интересные направления и оставьте контакты." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<style>
+  /* ==========================================================
+     ПРЕДЗАПИСЬ НА ВОЛЕЙБОЛЬНЫЙ КЭМП — единый HTML-файл
+     Стиль выдержан в палитре 7K Team × Oraz (тёмный фон, синий/циан/оранжевый акценты)
+     ========================================================== */
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:    #0E2841;
+    --blue:    #1C39E0;
+    --blue-dk: #1530C8;
+    --cyan:    #00CADF;
+    --orange:  #E85918;
+    --bg:      #06090F;
+    --bg-2:    #0B1220;
+    --bg-card: #0F1926;
+    --white:   #FFFFFF;
+    --gray-1:  #F0F4FA;
+    --gray-4:  #8896AA;
+    --gray-6:  #4A5568;
+    --border:  rgba(255,255,255,0.08);
+    --red:     #FF5C5C;
+    --font-d:  'Bebas Neue', sans-serif;
+    --font-b:  'Inter', sans-serif;
+    --ease:    cubic-bezier(0.4, 0, 0.2, 1);
+    --r:       12px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-b);
+    background: var(--bg);
+    color: var(--white);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* лёгкий шум по всей странице — как на странице мерча */
+  .noise {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    opacity: 0.4;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 64px 24px 100px;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    text-align: center;
+    padding: 40px 20px 48px;
+    margin-bottom: 40px;
+    border-radius: 20px;
+    background:
+      radial-gradient(ellipse 80% 70% at 50% 0%, rgba(28,57,224,0.22) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 50% at 100% 100%, rgba(0,202,223,0.10) 0%, transparent 60%),
+      var(--bg-2);
+    border: 1px solid var(--border);
+  }
+
+  .hero__eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 16px;
+  }
+
+  .hero__title {
+    font-family: var(--font-d);
+    font-size: clamp(38px, 7vw, 60px);
+    line-height: 1.1;
+    letter-spacing: 1px;
+    color: var(--white);
+    margin-bottom: 18px;
+  }
+
+  .hero__title-accent {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--cyan);
+  }
+
+  .hero__subtitle {
+    font-size: 16px;
+    color: var(--gray-4);
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* ===== BENEFITS ===== */
+  .benefits {
+    margin-bottom: 28px;
+  }
+
+  .benefits__title {
+    font-family: var(--font-d);
+    font-size: 28px;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+
+  .benefits__list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .benefit {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 16px 18px;
+    font-size: 15px;
+    color: var(--gray-1);
+  }
+
+  .benefit__icon {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,202,223,0.14);
+    color: var(--cyan);
+    font-size: 13px;
+    margin-top: 1px;
+  }
+
+  /* самый важный пункт — про скидку — подсвечен оранжевым */
+  .benefit--highlight {
+    background: linear-gradient(135deg, rgba(232,89,24,0.14), rgba(232,89,24,0.04));
+    border-color: rgba(232,89,24,0.4);
+  }
+
+  .benefit--highlight .benefit__icon {
+    background: rgba(232,89,24,0.2);
+    color: var(--orange);
+  }
+
+  .benefit--highlight strong {
+    color: var(--orange);
+  }
+
+  /* ===== NOTICE PLATE ===== */
+  .notice {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: var(--bg-card);
+    border-left: 3px solid var(--cyan);
+    border-radius: 0 var(--r) var(--r) 0;
+    padding: 16px 20px;
+    font-size: 14px;
+    color: var(--gray-4);
+    margin-bottom: 40px;
+  }
+
+  .notice__icon { flex: none; font-size: 18px; }
+
+  /* ===== SECTIONS ===== */
+  .section-title {
+    font-family: var(--font-d);
+    font-size: 28px;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .section-hint {
+    font-size: 13px;
+    color: var(--gray-6);
+    margin-bottom: 20px;
+  }
+
+  .required { color: var(--orange); }
+
+  /* ===== CAMPS GRID (карточки-чекбоксы) ===== */
+  .camps-section { margin-bottom: 40px; }
+
+  .camps-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+
+  .camp-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 18px 18px 18px 44px;
+    cursor: pointer;
+    transition: border-color 0.2s var(--ease), background 0.2s var(--ease), transform 0.15s var(--ease);
+  }
+
+  .camp-card:hover {
+    border-color: rgba(0,202,223,0.4);
+    transform: translateY(-2px);
+  }
+
+  .camp-card.is-selected {
+    border-color: var(--cyan);
+    background: linear-gradient(135deg, rgba(0,202,223,0.10), rgba(0,202,223,0.02));
+    box-shadow: 0 8px 24px rgba(0,202,223,0.12);
+  }
+
+  .camp-card__input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+  }
+
+  .camp-card__mark {
+    position: absolute;
+    top: 18px;
+    left: 16px;
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: 1.5px solid var(--gray-6);
+    background: var(--bg-2);
+    transition: all 0.15s var(--ease);
+  }
+
+  .camp-card.is-selected .camp-card__mark {
+    background: var(--cyan);
+    border-color: var(--cyan);
+  }
+
+  .camp-card.is-selected .camp-card__mark::after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid var(--bg);
+    border-width: 0 2px 2px 0;
+    transform: rotate(40deg);
+  }
+
+  .camp-card__tag {
+    align-self: flex-start;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    background: rgba(0,202,223,0.12);
+    border-radius: 20px;
+    padding: 3px 10px;
+    margin-bottom: 2px;
+  }
+
+  .camp-card__title {
+    font-family: var(--font-d);
+    font-size: 20px;
+    letter-spacing: 0.5px;
+    color: var(--white);
+    line-height: 1.15;
+  }
+
+  .camp-card__meta {
+    font-size: 13px;
+    color: var(--gray-4);
+    line-height: 1.5;
+  }
+
+  .camp-card__price {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gray-1);
+    margin-top: 4px;
+  }
+
+  /* ===== CONTACT FORM ===== */
+  .contact-section { margin-bottom: 32px; }
+
+  .field { margin-bottom: 18px; }
+
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-1);
+    margin-bottom: 8px;
+  }
+
+  .field input,
+  .field textarea {
+    width: 100%;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 14px;
+    font-family: var(--font-b);
+    font-size: 15px;
+    color: var(--white);
+    outline: none;
+    transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease);
+  }
+
+  .field textarea { resize: vertical; min-height: 88px; }
+
+  .field input::placeholder,
+  .field textarea::placeholder { color: var(--gray-6); }
+
+  .field input:focus,
+  .field textarea:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 3px rgba(0,202,223,0.15);
+  }
+
+  .field.has-error input,
+  .field.has-error textarea {
+    border-color: var(--red);
+  }
+
+  .field-error {
+    display: none;
+    font-size: 13px;
+    color: var(--red);
+    margin-top: 6px;
+  }
+
+  .field-error.visible,
+  .camps-error.visible { display: block; }
+
+  .camps-error {
+    display: none;
+    font-size: 13px;
+    color: var(--red);
+    margin-top: 4px;
+  }
+
+  /* ===== SUBMIT ===== */
+  .submit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    background: var(--blue);
+    color: var(--white);
+    border: none;
+    font-family: var(--font-b);
+    font-size: 15px;
+    font-weight: 700;
+    padding: 16px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s var(--ease), transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+  }
+
+  .submit-btn:hover:not(:disabled) {
+    background: var(--blue-dk);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(28,57,224,0.35);
+  }
+
+  .submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .submit-error {
+    display: none;
+    text-align: center;
+    font-size: 13px;
+    color: var(--red);
+    margin-top: 12px;
+  }
+
+  .submit-error.visible { display: block; }
+
+  /* ===== SUCCESS SCREEN ===== */
+  .success-screen {
+    text-align: center;
+    padding: 60px 20px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+  }
+
+  .success-icon {
+    width: 68px;
+    height: 68px;
+    margin: 0 auto 24px;
+    border-radius: 50%;
+    background: rgba(0,202,223,0.14);
+    color: var(--cyan);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+  }
+
+  .success-screen h2 {
+    font-family: var(--font-d);
+    font-size: 34px;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+  }
+
+  .success-screen p {
+    font-size: 15px;
+    color: var(--gray-4);
+    max-width: 420px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    text-align: center;
+    margin-top: 48px;
+    font-size: 12px;
+    color: var(--gray-6);
+  }
+
+  /* ===== ADAPTIVE ===== */
+  @media (max-width: 620px) {
+    .camps-grid { grid-template-columns: 1fr; }
+    .page { padding: 40px 16px 60px; }
+    .hero { padding: 32px 16px 36px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="noise"></div>
+
+<div class="page">
+
+  <!-- ШАПКА -->
+  <header class="hero">
+    <p class="hero__eyebrow">Волейбольные кэмпы</p>
+    <h1 class="hero__title">Предзапись на <span class="hero__title-accent">волейбольный кэмп</span></h1>
+    <p class="hero__subtitle">Хотите первыми узнать всё о поездке и, если всё понравится, забронировать место? Начните с анкеты — это займёт пару минут.</p>
+  </header>
+
+  <!-- ЧТО ВЫ ПОЛУЧИТЕ -->
+  <section class="benefits">
+    <h2 class="benefits__title">Что вы получите</h2>
+    <ul class="benefits__list">
+      <li class="benefit">
+        <span class="benefit__icon">i</span>
+        <span>Всю ключевую информацию о поездке — в первую очередь</span>
+      </li>
+      <li class="benefit">
+        <span class="benefit__icon">★</span>
+        <span>Возможность забронировать место раньше остальных</span>
+      </li>
+      <li class="benefit benefit--highlight">
+        <span class="benefit__icon">%</span>
+        <span><strong>Приятную скидку</strong> для всех, кто заполнил анкету</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ПЛАШКА-НАПОМИНАНИЕ -->
+  <div class="notice">
+    <span class="notice__icon">🤍</span>
+    <span>Анкета вас ни к чему не обязывает. Это просто ваше намерение рассмотреть поездку — без спешки и обязательств. Понравится — бронируете. Нет — ничего страшного.</span>
+  </div>
+
+  <!-- ФОРМА -->
+  <form id="campForm" novalidate>
+
+    <section class="camps-section">
+      <h2 class="section-title">Какие кэмпы интересны? <span class="required">*</span></h2>
+      <p class="section-hint">Можно выбрать несколько вариантов</p>
+      <div class="camps-grid" id="campsGrid"><!-- карточки генерируются из CONFIG.camps в скрипте --></div>
+      <p class="camps-error" id="campsError"></p>
+    </section>
+
+    <section class="contact-section">
+      <h2 class="section-title">Ваши контакты</h2>
+      <p class="section-hint">Чтобы мы могли прислать детали и держать место</p>
+
+      <div class="field" id="fieldNameWrap">
+        <label for="fieldName">Имя <span class="required">*</span></label>
+        <input type="text" id="fieldName" name="name" placeholder="Как вас зовут?" autocomplete="name" />
+        <p class="field-error" id="nameError"></p>
+      </div>
+
+      <div class="field" id="fieldContactWrap">
+        <label for="fieldContact">Телефон или Telegram <span class="required">*</span></label>
+        <input type="text" id="fieldContact" name="contact" placeholder="+7 999 123-45-67 или @username" autocomplete="tel" />
+        <p class="field-error" id="contactError"></p>
+      </div>
+
+      <div class="field">
+        <label for="fieldCity">Город</label>
+        <input type="text" id="fieldCity" name="city" placeholder="Например, Алматы" autocomplete="address-level2" />
+      </div>
+
+      <div class="field">
+        <label for="fieldComment">Комментарий</label>
+        <textarea id="fieldComment" name="comment" placeholder="Пожелания, вопросы — всё, что хотите добавить"></textarea>
+      </div>
+    </section>
+
+    <button type="submit" class="submit-btn" id="submitBtn">Отправить заявку</button>
+    <p class="submit-error" id="submitError"></p>
+  </form>
+
+  <!-- ЭКРАН "ГОТОВО" -->
+  <section class="success-screen" id="successScreen" hidden>
+    <div class="success-icon">✓</div>
+    <h2>Готово, вы в списке!</h2>
+    <p>Мы пришлём всю информацию о кэмпах первыми и заранее сообщим о старте бронирования. Спасибо, что заполнили анкету 🏐</p>
+  </section>
+
+  <footer class="footer">© 2027 Волейбольные кэмпы. Заполняя анкету, вы соглашаетесь на обработку контактных данных.</footer>
+
+</div>
+
+<script>
+/* ==========================================================
+   CONFIG — всё, что нужно отредактировать под свою Google Форму,
+   собрано здесь одним объектом.
+
+   КАК ЗАПОЛНИТЬ:
+   1. Создайте Google Форму с полями:
+      - Имя (короткий текст)
+      - Телефон или Telegram (короткий текст)
+      - Город (короткий текст)
+      - Комментарий (многострочный текст)
+      - Какие кэмпы интересны? (тип «Флажки» / Checkboxes) —
+        варианты ответа должны СЛОВО В СЛОВО совпадать со значениями
+        поля camps[].value ниже.
+   2. Откройте форму для заполнения (не для редактирования) и нажмите
+      "⋮" → "Получить предзаполненную ссылку".
+   3. Заполните черновые ответы в каждом поле и нажмите "Получить ссылку".
+   4. В полученной ссылке вида
+      https://docs.google.com/forms/d/e/1FAIpQLS.../viewform?usp=pp_url&entry.111=...&entry.222=...
+      скопируйте:
+        - ID формы (кусок между /d/e/ и /viewform) → CONFIG.formId
+        - каждое entry.XXXXXXXXX → в соответствующее поле CONFIG.entries
+          (у чекбоксов entry-номер один и тот же для всех вариантов —
+          это нормально, при отправке мы просто добавляем несколько
+          параметров с одинаковым именем, по одному на каждый выбранный кэмп)
+   5. Замените ссылку в формуле POST-запроса ниже не нужно —
+      она уже собирается из CONFIG.formId автоматически.
+   ========================================================== */
+  const CONFIG = {
+    // ID вашей Google Формы (между /d/e/ и /viewform в предзаполненной ссылке)
+    formId: 'ВСТАВЬТЕ_СЮДА_FORM_ID',
+
+    // entry-номера полей формы, вида 'entry.123456789'
+    entries: {
+      name:    'entry.1111111111', // Имя
+      contact: 'entry.2222222222', // Телефон или Telegram
+      city:    'entry.3333333333', // Город
+      comment: 'entry.4444444444', // Комментарий
+      camps:   'entry.5555555555'  // Какие кэмпы интересны (Флажки) — один entry на все варианты
+    },
+
+    // Список кэмпов — карточки на странице генерируются из этого массива.
+    // value должно ТОЧНО совпадать с текстом варианта ответа в Google Форме.
+    // price можно оставить пустой строкой '' — тогда строка с ценой на карточке не показывается.
+    camps: [
+      {
+        value: 'Вьетнам (Дананг), 13–24 февраля',
+        title: 'Дананг, Вьетнам',
+        meta: '13 февраля (сбор) – 24 февраля (отъезд) · Дананг, Вьетнам',
+        price: '',
+        tag: 'Продажи с 1 окт'
+      },
+      {
+        value: 'Таиланд, 1 смена (27 февраля – 10 марта)',
+        title: 'Таиланд · 1 смена',
+        meta: '27 февраля (сбор) – 10 марта (отъезд) · Таиланд',
+        price: '',
+        tag: 'Продажи с 15 окт'
+      },
+      {
+        value: 'Таиланд, 2 смена (13–24 марта)',
+        title: 'Таиланд · 2 смена',
+        meta: '13 марта (сбор) – 24 марта (отъезд) · Таиланд',
+        price: '',
+        tag: 'Продажи с 15 окт'
+      },
+      {
+        value: 'Турция (Side Star), майские праздники 1–10 мая',
+        title: 'Сиде, Турция (Side Star)',
+        meta: '1–10 мая (майские праздники) · Сиде, Турция',
+        price: '',
+        tag: 'Продажи до 15 дек'
+      },
+      {
+        value: 'Зеленоградск, 31 июля – 8 августа',
+        title: 'Зеленоградск',
+        meta: '31 июля – 8 августа · Зеленоградск',
+        price: '',
+        tag: 'Продажи до 15 мар'
+      },
+      {
+        value: 'Волейбольное путешествие (новая страна), 11–25 сентября',
+        title: 'Волейбольное путешествие — новая страна',
+        meta: '11–25 сентября · место уточняется 🔜',
+        price: '',
+        tag: 'Подробности скоро'
+      },
+      {
+        value: 'Сочи (Спорт Инн), 2–10 октября',
+        title: 'Сочи · Спорт Инн',
+        meta: '2–10 октября · Сочи, «Спорт Инн»',
+        price: '',
+        tag: 'Спорт Инн'
+      },
+      {
+        value: 'Волейбольное путешествие на Бали 3.0, 6–21 ноября',
+        title: 'Бали 3.0',
+        meta: '6–21 ноября · Бали, Индонезия',
+        price: '',
+        tag: '3-й сезон'
+      }
+    ]
+  };
+
+  /* ========================================================== */
+
+  const campsGrid   = document.getElementById('campsGrid');
+  const form        = document.getElementById('campForm');
+  const successEl   = document.getElementById('successScreen');
+  const submitBtn    = document.getElementById('submitBtn');
+  const submitError = document.getElementById('submitError');
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // Рисуем карточки кэмпов из CONFIG.camps
+  function renderCamps() {
+    campsGrid.innerHTML = CONFIG.camps.map((camp, i) => `
+      <label class="camp-card" data-index="${i}">
+        <input type="checkbox" class="camp-card__input" value="${escapeHtml(camp.value)}" />
+        <span class="camp-card__mark" aria-hidden="true"></span>
+        <span class="camp-card__tag">${escapeHtml(camp.tag)}</span>
+        <span class="camp-card__title">${escapeHtml(camp.title)}</span>
+        <span class="camp-card__meta">${escapeHtml(camp.meta)}</span>
+        ${camp.price ? `<span class="camp-card__price">${escapeHtml(camp.price)}</span>` : ''}
+      </label>
+    `).join('');
+
+    // подсветка выбранной карточки + очистка ошибки при выборе кэмпа
+    campsGrid.querySelectorAll('.camp-card').forEach((card) => {
+      const input = card.querySelector('.camp-card__input');
+      input.addEventListener('change', () => {
+        card.classList.toggle('is-selected', input.checked);
+        hideCampsError();
+      });
+    });
+  }
+
+  function showFieldError(wrapId, errorId, message) {
+    document.getElementById(wrapId).classList.add('has-error');
+    const el = document.getElementById(errorId);
+    el.textContent = message;
+    el.classList.add('visible');
+  }
+
+  function hideFieldError(wrapId, errorId) {
+    document.getElementById(wrapId).classList.remove('has-error');
+    const el = document.getElementById(errorId);
+    el.classList.remove('visible');
+    el.textContent = '';
+  }
+
+  function showCampsError(message) {
+    const el = document.getElementById('campsError');
+    el.textContent = message;
+    el.classList.add('visible');
+  }
+
+  function hideCampsError() {
+    const el = document.getElementById('campsError');
+    el.classList.remove('visible');
+    el.textContent = '';
+  }
+
+  function showSubmitError(message) {
+    submitError.textContent = message;
+    submitError.classList.add('visible');
+  }
+
+  function hideSubmitError() {
+    submitError.classList.remove('visible');
+    submitError.textContent = '';
+  }
+
+  // Убираем ошибку с поля, как только человек начал его заполнять
+  document.getElementById('fieldName').addEventListener('input', () => hideFieldError('fieldNameWrap', 'nameError'));
+  document.getElementById('fieldContact').addEventListener('input', () => hideFieldError('fieldContactWrap', 'contactError'));
+
+  async function onSubmit(e) {
+    e.preventDefault();
+    hideSubmitError();
+
+    const nameEl    = document.getElementById('fieldName');
+    const contactEl = document.getElementById('fieldContact');
+    const cityEl    = document.getElementById('fieldCity');
+    const commentEl = document.getElementById('fieldComment');
+
+    const name    = nameEl.value.trim();
+    const contact = contactEl.value.trim();
+    const city    = cityEl.value.trim();
+    const comment = commentEl.value.trim();
+    const selectedCamps = Array.from(
+      campsGrid.querySelectorAll('.camp-card__input:checked')
+    ).map((el) => el.value);
+
+    let valid = true;
+
+    if (!name) {
+      showFieldError('fieldNameWrap', 'nameError', 'Пожалуйста, укажите ваше имя');
+      valid = false;
+    } else {
+      hideFieldError('fieldNameWrap', 'nameError');
+    }
+
+    if (!contact) {
+      showFieldError('fieldContactWrap', 'contactError', 'Укажите телефон или Telegram, чтобы мы могли с вами связаться');
+      valid = false;
+    } else {
+      hideFieldError('fieldContactWrap', 'contactError');
+    }
+
+    if (selectedCamps.length === 0) {
+      showCampsError('Выберите хотя бы один кэмп, который вам интересен');
+      valid = false;
+    } else {
+      hideCampsError();
+    }
+
+    if (!valid) {
+      // прокручиваем к первой ошибке
+      const firstError = form.querySelector('.field-error.visible, .camps-error.visible');
+      if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Отправляем...';
+
+    const body = new URLSearchParams();
+    body.append(CONFIG.entries.name, name);
+    body.append(CONFIG.entries.contact, contact);
+    if (city) body.append(CONFIG.entries.city, city);
+    if (comment) body.append(CONFIG.entries.comment, comment);
+    // для чекбоксов добавляем по одному параметру с тем же entry-именем на каждый выбранный кэмп
+    selectedCamps.forEach((value) => body.append(CONFIG.entries.camps, value));
+
+    try {
+      await fetch(`https://docs.google.com/forms/d/e/${CONFIG.formId}/formResponse`, {
+        method: 'POST',
+        mode: 'no-cors', // ответ Google Формы нельзя прочитать — это ожидаемо
+        body
+      });
+      // в режиме no-cors успешный fetch не значит, что мы видели статус ответа,
+      // но раз запрос ушёл без сетевой ошибки — считаем отправку успешной
+      form.hidden = true;
+      successEl.hidden = false;
+      successEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (err) {
+      // сюда попадаем только при настоящей сетевой ошибке (нет соединения и т.п.)
+      showSubmitError('Не удалось отправить заявку. Проверьте подключение к интернету и попробуйте ещё раз.');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Отправить заявку';
+    }
+  }
+
+  renderCamps();
+  form.addEventListener('submit', onSubmit);
+</script>
+
+</body>
+</html>
