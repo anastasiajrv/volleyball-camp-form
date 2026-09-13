@@ -26,8 +26,9 @@
    5. Скопировать полученный URL веб-приложения (заканчивается на /exec)
       и прислать его — дальше вставка в сайт и проверка уже не ваша забота.
    6. Если позже меняете код скрипта — нужно каждый раз делать
-      "Управление развёртываниями" → редактировать → "Новая версия",
-      иначе изменения не применятся к уже выданному URL.
+      "Управление развёртываниями" → редактировать → "Начать развёртывание"
+      (версия "Новая версия"), иначе изменения не применятся к уже
+      выданному URL.
    ========================================================== */
 
 const SPREADSHEET_ID = '1vwfNUmeTN7G-vRCY5MaLlVfp8dUc5iFEx8-_F2soZwQ';
@@ -39,20 +40,20 @@ function doPost(e) {
     const timestamp = new Date();
     const camps = Array.isArray(data.camps) ? data.camps : [];
 
+    // safeText() защищает телефон (и любое другое поле) от превращения
+    // в #ERROR! — Google Таблицы читают "+7 999..." как формулу.
+    const name = safeText(data.name);
+    const phone = safeText(data.phone);
+    const messenger = safeText(data.messenger);
+    const city = safeText(data.city);
+    const comment = safeText(data.comment);
+
     // 1) сводная строка в "Все заявки"
     writeRow(
       ss,
       'Все заявки',
       ['Дата', 'Имя', 'Телефон', 'Telegram/мессенджер', 'Город', 'Комментарий', 'Кэмпы'],
-      [
-        timestamp,
-        data.name || '',
-        data.phone || '',
-        data.messenger || '',
-        data.city || '',
-        data.comment || '',
-        camps.map((c) => c.title).join(', ')
-      ]
+      [timestamp, name, phone, messenger, city, comment, camps.map((c) => c.title).join(', ')]
     );
 
     // 2) отдельная строка на вкладке каждого выбранного кэмпа
@@ -62,14 +63,7 @@ function doPost(e) {
         ss,
         camp.sheetName,
         ['Дата', 'Имя', 'Телефон', 'Telegram/мессенджер', 'Город', 'Комментарий'],
-        [
-          timestamp,
-          data.name || '',
-          data.phone || '',
-          data.messenger || '',
-          data.city || '',
-          data.comment || ''
-        ]
+        [timestamp, name, phone, messenger, city, comment]
       );
     });
 
@@ -82,6 +76,15 @@ function doPost(e) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
+// Если строка начинается с "+", "-", "=" или "@" — Google Таблицы пытаются
+// прочитать её как формулу и показывают #ERROR!. Ведущий апостроф — это
+// стандартный способ Таблиц пометить значение "это точно текст"; сам апостроф
+// в отображении ячейки не виден.
+function safeText(value) {
+  const str = (value === undefined || value === null) ? '' : String(value);
+  return /^[+\-=@]/.test(str) ? "'" + str : str;
+}
+
 // Пишет строку в лист sheetName; если листа ещё нет — создаёт его и добавляет заголовок
 function writeRow(ss, sheetName, header, row) {
   let sheet = ss.getSheetByName(sheetName);
@@ -91,13 +94,5 @@ function writeRow(ss, sheetName, header, row) {
   } else if (sheet.getLastRow() === 0) {
     sheet.appendRow(header);
   }
-
-  // Телефон начинается с "+" — без этого Google Таблицы пытаются прочитать
-  // его как формулу и показывают #ERROR!. Держим эту колонку как обычный текст.
-  const phoneCol = header.indexOf('Телефон') + 1;
-  if (phoneCol > 0) {
-    sheet.getRange(1, phoneCol, sheet.getMaxRows(), 1).setNumberFormat('@');
-  }
-
   sheet.appendRow(row);
 }
