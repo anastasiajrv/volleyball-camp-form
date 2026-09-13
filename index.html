@@ -268,6 +268,9 @@
   /* необязательный цвет всего названия целиком (camp.titleColor) — например ярко-зелёный для "Новая страна" */
   .camp-card__title--lime { color: var(--lime); }
 
+  /* необязательный цвет подписи-kicker (camp.kickerColor) */
+  .camp-card__kicker--lime { color: var(--lime); }
+
   .camp-card__meta {
     font-size: 13px;
     color: var(--orange);
@@ -543,7 +546,8 @@
     //   Держите sheetName короткими и разными у всех кэмпов.
     // price можно оставить пустой строкой '' — тогда строка с ценой на карточке не показывается.
     // badge — необязательное поле, например 'NEW'; если задано, в углу карточки появляется яркая плашка.
-    // kicker — необязательная маленькая подпись НАД title (например 'Волейбольное путешествие' перед 'Бали 3.0').
+    // kicker — необязательная маленькая подпись ПОД title (например 'Волейбольное путешествие' под 'Бали 3.0',
+    //   или 'Новая страна' под 'Путешествие'). kickerColor — её цвет, сейчас поддерживается 'lime'.
     // titleAccent — необязательная часть названия рядом с title, выделенная оранжевым (например '3.0' после 'Бали').
     // titleColor — необязательный цвет ВСЕГО title целиком, сейчас поддерживается 'lime' (ярко-зелёный).
     camps: [
@@ -585,8 +589,9 @@
       {
         value: 'Волейбольное путешествие, новая страна, 11–25 сентября',
         sheetName: 'Новая страна',
-        title: 'Новая страна',
-        titleColor: 'lime',
+        title: 'Путешествие',
+        kicker: 'Новая страна',
+        kickerColor: 'lime',
         meta: '11–25 сентября 2027',
         price: '',
         badge: 'NEW'
@@ -634,7 +639,7 @@
         <span class="camp-card__mark" aria-hidden="true"></span>
         ${camp.badge ? `<span class="camp-card__badge">${escapeHtml(camp.badge)}</span>` : ''}
         <span class="camp-card__title${camp.titleColor ? ` camp-card__title--${camp.titleColor}` : ''}">${escapeHtml(camp.title)}${camp.titleAccent ? ` <span class="camp-card__title-accent">${escapeHtml(camp.titleAccent)}</span>` : ''}</span>
-        ${camp.kicker ? `<span class="camp-card__kicker">${escapeHtml(camp.kicker)}</span>` : ''}
+        ${camp.kicker ? `<span class="camp-card__kicker${camp.kickerColor ? ` camp-card__kicker--${camp.kickerColor}` : ''}">${escapeHtml(camp.kicker)}</span>` : ''}
         <span class="camp-card__meta">${escapeHtml(camp.meta)}</span>
         ${camp.price ? `<span class="camp-card__price">${escapeHtml(camp.price)}</span>` : ''}
       </label>
