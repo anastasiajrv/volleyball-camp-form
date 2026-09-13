@@ -19,20 +19,18 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --navy:    #0E2841;
-    --blue:    #1C39E0;
-    --blue-dk: #1530C8;
-    --cyan:    #00CADF;
-    --orange:  #E85918;
-    --bg:      #06090F;
-    --bg-2:    #0B1220;
-    --bg-card: #0F1926;
-    --white:   #FFFFFF;
-    --gray-1:  #F0F4FA;
-    --gray-4:  #8896AA;
-    --gray-6:  #4A5568;
-    --border:  rgba(255,255,255,0.08);
-    --red:     #FF5C5C;
+    /* Светлая палитра в стиле 7kteam.ru: белый фон, лайм и оранжевый как акценты */
+    --ink:        #14171A; /* основной текст */
+    --ink-soft:   #57616B; /* второстепенный текст */
+    --ink-faint:  #8B96A0; /* плейсхолдеры, самый слабый текст */
+    --line:       #DCE3E8; /* границы карточек и полей */
+    --bg:         #FFFFFF; /* фон страницы */
+    --panel:      #F2F5F3; /* фон "плашек" — шапка, поля, карточки */
+    --lime:       #BFFF00; /* основной акцент — кнопки, выделение */
+    --lime-dark:  #9FE000; /* hover/граница для лайма */
+    --orange:     #FF7A00; /* акцент — теги, фокус */
+    --orange-dark:#D9600A; /* тёмный оранжевый — там, где нужен контраст на белом */
+    --red:        #D64545; /* ошибки */
     --font-d:  'Bebas Neue', sans-serif;
     --font-b:  'Inter', sans-serif;
     --ease:    cubic-bezier(0.4, 0, 0.2, 1);
@@ -44,21 +42,14 @@
   body {
     font-family: var(--font-b);
     background: var(--bg);
-    color: var(--white);
+    color: var(--ink);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
 
-  /* лёгкий шум по всей странице — как на странице мерча */
-  .noise {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-    opacity: 0.4;
-  }
+  /* шум убран — на светлом фоне он не нужен, оставляем страницу чистой */
+  .noise { display: none; }
 
   .page {
     position: relative;
@@ -76,10 +67,10 @@
     margin-bottom: 40px;
     border-radius: 20px;
     background:
-      radial-gradient(ellipse 80% 70% at 50% 0%, rgba(28,57,224,0.22) 0%, transparent 70%),
-      radial-gradient(ellipse 60% 50% at 100% 100%, rgba(0,202,223,0.10) 0%, transparent 60%),
-      var(--bg-2);
-    border: 1px solid var(--border);
+      radial-gradient(ellipse 80% 70% at 50% 0%, rgba(191,255,0,0.20) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 50% at 100% 100%, rgba(255,122,0,0.10) 0%, transparent 60%),
+      var(--panel);
+    border: 1px solid var(--line);
   }
 
   .hero__logo {
@@ -94,7 +85,7 @@
     font-weight: 700;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: var(--cyan);
+    color: var(--orange-dark);
     margin-bottom: 16px;
   }
 
@@ -103,18 +94,18 @@
     font-size: clamp(38px, 7vw, 60px);
     line-height: 1.1;
     letter-spacing: 1px;
-    color: var(--white);
+    color: var(--ink);
     margin-bottom: 18px;
   }
 
   .hero__title-accent {
     color: transparent;
-    -webkit-text-stroke: 1.5px var(--cyan);
+    -webkit-text-stroke: 2px var(--orange-dark);
   }
 
   .hero__subtitle {
     font-size: 16px;
-    color: var(--gray-4);
+    color: var(--ink-soft);
     max-width: 520px;
     margin: 0 auto;
     line-height: 1.7;
@@ -125,12 +116,12 @@
     display: flex;
     gap: 12px;
     align-items: flex-start;
-    background: var(--bg-card);
-    border-left: 3px solid var(--cyan);
+    background: var(--panel);
+    border-left: 3px solid var(--lime-dark);
     border-radius: 0 var(--r) var(--r) 0;
     padding: 16px 20px;
     font-size: 14px;
-    color: var(--gray-4);
+    color: var(--ink-soft);
     margin-bottom: 40px;
   }
 
@@ -142,15 +133,16 @@
     font-size: 28px;
     letter-spacing: 1px;
     margin-bottom: 4px;
+    color: var(--ink);
   }
 
   .section-hint {
     font-size: 13px;
-    color: var(--gray-6);
+    color: var(--ink-faint);
     margin-bottom: 20px;
   }
 
-  .required { color: var(--orange); }
+  .required { color: var(--orange-dark); }
 
   /* ===== CAMPS GRID (карточки-чекбоксы) ===== */
   .camps-section { margin-bottom: 40px; }
@@ -167,8 +159,8 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+    background: var(--panel);
+    border: 1px solid var(--line);
     border-radius: var(--r);
     padding: 18px 18px 18px 44px;
     cursor: pointer;
@@ -176,14 +168,14 @@
   }
 
   .camp-card:hover {
-    border-color: rgba(0,202,223,0.4);
+    border-color: var(--lime-dark);
     transform: translateY(-2px);
   }
 
   .camp-card.is-selected {
-    border-color: var(--cyan);
-    background: linear-gradient(135deg, rgba(0,202,223,0.10), rgba(0,202,223,0.02));
-    box-shadow: 0 8px 24px rgba(0,202,223,0.12);
+    border-color: var(--lime-dark);
+    background: linear-gradient(135deg, rgba(191,255,0,0.22), rgba(191,255,0,0.06));
+    box-shadow: 0 8px 24px rgba(191,255,0,0.18);
   }
 
   .camp-card__input {
@@ -200,14 +192,14 @@
     width: 20px;
     height: 20px;
     border-radius: 6px;
-    border: 1.5px solid var(--gray-6);
-    background: var(--bg-2);
+    border: 1.5px solid var(--ink-faint);
+    background: var(--bg);
     transition: all 0.15s var(--ease);
   }
 
   .camp-card.is-selected .camp-card__mark {
-    background: var(--cyan);
-    border-color: var(--cyan);
+    background: var(--lime);
+    border-color: var(--lime-dark);
   }
 
   .camp-card.is-selected .camp-card__mark::after {
@@ -217,7 +209,7 @@
     top: 2px;
     width: 5px;
     height: 10px;
-    border: solid var(--bg);
+    border: solid var(--ink);
     border-width: 0 2px 2px 0;
     transform: rotate(40deg);
   }
@@ -228,8 +220,8 @@
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: var(--cyan);
-    background: rgba(0,202,223,0.12);
+    color: var(--orange-dark);
+    background: rgba(255,122,0,0.12);
     border-radius: 20px;
     padding: 3px 10px;
     margin-bottom: 2px;
@@ -239,20 +231,20 @@
     font-family: var(--font-d);
     font-size: 20px;
     letter-spacing: 0.5px;
-    color: var(--white);
+    color: var(--ink);
     line-height: 1.15;
   }
 
   .camp-card__meta {
     font-size: 13px;
-    color: var(--gray-4);
+    color: var(--ink-soft);
     line-height: 1.5;
   }
 
   .camp-card__price {
     font-size: 14px;
     font-weight: 600;
-    color: var(--gray-1);
+    color: var(--ink);
     margin-top: 4px;
   }
 
@@ -265,20 +257,20 @@
     display: block;
     font-size: 13px;
     font-weight: 600;
-    color: var(--gray-1);
+    color: var(--ink);
     margin-bottom: 8px;
   }
 
   .field input,
   .field textarea {
     width: 100%;
-    background: var(--bg-2);
-    border: 1px solid var(--border);
+    background: var(--panel);
+    border: 1px solid var(--line);
     border-radius: 10px;
     padding: 13px 14px;
     font-family: var(--font-b);
     font-size: 15px;
-    color: var(--white);
+    color: var(--ink);
     outline: none;
     transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease);
   }
@@ -286,12 +278,12 @@
   .field textarea { resize: vertical; min-height: 88px; }
 
   .field input::placeholder,
-  .field textarea::placeholder { color: var(--gray-6); }
+  .field textarea::placeholder { color: var(--ink-faint); }
 
   .field input:focus,
   .field textarea:focus {
-    border-color: var(--cyan);
-    box-shadow: 0 0 0 3px rgba(0,202,223,0.15);
+    border-color: var(--lime-dark);
+    box-shadow: 0 0 0 3px rgba(191,255,0,0.28);
   }
 
   .field.has-error input,
@@ -323,12 +315,12 @@
     justify-content: center;
     gap: 8px;
     width: 100%;
-    background: var(--blue);
-    color: var(--white);
+    background: var(--lime);
+    color: var(--ink);
     border: none;
     font-family: var(--font-b);
     font-size: 15px;
-    font-weight: 700;
+    font-weight: 800;
     padding: 16px 24px;
     border-radius: 10px;
     cursor: pointer;
@@ -336,9 +328,9 @@
   }
 
   .submit-btn:hover:not(:disabled) {
-    background: var(--blue-dk);
+    background: var(--lime-dark);
     transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(28,57,224,0.35);
+    box-shadow: 0 12px 32px rgba(191,255,0,0.45);
   }
 
   .submit-btn:disabled {
@@ -360,8 +352,8 @@
   .success-screen {
     text-align: center;
     padding: 60px 20px;
-    background: var(--bg-2);
-    border: 1px solid var(--border);
+    background: var(--panel);
+    border: 1px solid var(--line);
     border-radius: 20px;
   }
 
@@ -370,8 +362,8 @@
     height: 68px;
     margin: 0 auto 24px;
     border-radius: 50%;
-    background: rgba(0,202,223,0.14);
-    color: var(--cyan);
+    background: var(--lime);
+    color: var(--ink);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -383,11 +375,12 @@
     font-size: 34px;
     letter-spacing: 1px;
     margin-bottom: 14px;
+    color: var(--ink);
   }
 
   .success-screen p {
     font-size: 15px;
-    color: var(--gray-4);
+    color: var(--ink-soft);
     max-width: 420px;
     margin: 0 auto;
     line-height: 1.7;
@@ -398,7 +391,7 @@
     text-align: center;
     margin-top: 48px;
     font-size: 12px;
-    color: var(--gray-6);
+    color: var(--ink-faint);
   }
 
   /* ===== ADAPTIVE ===== */
