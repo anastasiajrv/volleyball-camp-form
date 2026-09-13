@@ -264,6 +264,9 @@
     line-height: 1.2;
   }
 
+  /* необязательная выделенная часть названия — например "3.0" в "Бали 3.0" */
+  .camp-card__title-accent { color: var(--orange); }
+
   .camp-card__meta {
     font-size: 13px;
     color: var(--ink-soft);
@@ -538,6 +541,7 @@
     // price можно оставить пустой строкой '' — тогда строка с ценой на карточке не показывается.
     // badge — необязательное поле, например 'NEW'; если задано, в углу карточки появляется яркая плашка.
     // kicker — необязательная маленькая подпись НАД title (например 'Волейбольное путешествие' перед 'Бали 3.0').
+    // titleAccent — необязательная часть названия рядом с title, выделенная оранжевым (например '3.0' после 'Бали').
     camps: [
       {
         value: 'Вьетнам, Дананг, 13–24 февраля',
@@ -578,7 +582,7 @@
         value: 'Волейбольное путешествие, новая страна, 11–25 сентября',
         sheetName: 'Новая страна',
         title: 'Волейбольное путешествие — новая страна',
-        meta: '11–25 сентября 2026',
+        meta: '11–25 сентября 2027',
         price: '',
         badge: 'NEW'
       },
@@ -586,15 +590,16 @@
         value: 'Сочи, Спорт Инн, 2–10 октября',
         sheetName: 'Сочи',
         title: 'Сочи · Спорт Инн',
-        meta: '2–10 октября 2026',
+        meta: '2–10 октября 2027',
         price: ''
       },
       {
         value: 'Волейбольное путешествие на Бали 3.0, 6–21 ноября',
         sheetName: 'Бали 3.0',
         kicker: 'Волейбольное путешествие',
-        title: 'Бали 3.0',
-        meta: '6–21 ноября 2026 · Индонезия',
+        title: 'Бали',
+        titleAccent: '3.0',
+        meta: '6–21 ноября 2027 · Индонезия',
         price: ''
       }
     ]
@@ -623,7 +628,7 @@
         <input type="checkbox" class="camp-card__input" value="${escapeHtml(camp.value)}" />
         <span class="camp-card__mark" aria-hidden="true"></span>
         ${camp.badge ? `<span class="camp-card__badge">${escapeHtml(camp.badge)}</span>` : ''}
-        <span class="camp-card__title">${escapeHtml(camp.title)}</span>
+        <span class="camp-card__title">${escapeHtml(camp.title)}${camp.titleAccent ? ` <span class="camp-card__title-accent">${escapeHtml(camp.titleAccent)}</span>` : ''}</span>
         ${camp.kicker ? `<span class="camp-card__kicker">${escapeHtml(camp.kicker)}</span>` : ''}
         <span class="camp-card__meta">${escapeHtml(camp.meta)}</span>
         ${camp.price ? `<span class="camp-card__price">${escapeHtml(camp.price)}</span>` : ''}
