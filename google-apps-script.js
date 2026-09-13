@@ -91,5 +91,13 @@ function writeRow(ss, sheetName, header, row) {
   } else if (sheet.getLastRow() === 0) {
     sheet.appendRow(header);
   }
+
+  // Телефон начинается с "+" — без этого Google Таблицы пытаются прочитать
+  // его как формулу и показывают #ERROR!. Держим эту колонку как обычный текст.
+  const phoneCol = header.indexOf('Телефон') + 1;
+  if (phoneCol > 0) {
+    sheet.getRange(1, phoneCol, sheet.getMaxRows(), 1).setNumberFormat('@');
+  }
+
   sheet.appendRow(row);
 }
