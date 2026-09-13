@@ -13,24 +13,25 @@
 <style>
   /* ==========================================================
      ПРЕДЗАПИСЬ НА ВОЛЕЙБОЛЬНЫЙ КЭМП — единый HTML-файл
-     Стиль выдержан в палитре 7K Team × Oraz (тёмный фон, синий/циан/оранжевый акценты)
+     Стиль в духе 7kteam.ru: графитовый фон, лайм и оранжевый как яркие акценты
      ========================================================== */
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    /* Светлая палитра в стиле 7kteam.ru: белый фон, лайм и оранжевый как акценты */
-    --ink:        #14171A; /* основной текст */
-    --ink-soft:   #57616B; /* второстепенный текст */
-    --ink-faint:  #8B96A0; /* плейсхолдеры, самый слабый текст */
-    --line:       #DCE3E8; /* границы карточек и полей */
-    --bg:         #FFFFFF; /* фон страницы */
-    --panel:      #F2F5F3; /* фон "плашек" — шапка, поля, карточки */
+    /* Графитовая палитра в стиле 7kteam.ru: тёмно-серый фон, лайм и оранжевый как яркие акценты */
+    --ink:        #F5F6F5; /* основной текст — светлый */
+    --ink-soft:   #B7BDC2; /* второстепенный текст */
+    --ink-faint:  #8C9298; /* плейсхолдеры, самый слабый текст */
+    --line:       rgba(255,255,255,0.12); /* границы карточек и полей */
+    --bg:         #333333; /* графитовый фон страницы */
+    --panel:      #3D3D3D; /* фон "плашек" — шапка, поля, карточки (чуть светлее фона) */
     --lime:       #BFFF00; /* основной акцент — кнопки, выделение */
     --lime-dark:  #9FE000; /* hover/граница для лайма */
-    --orange:     #FF7A00; /* акцент — теги, фокус */
-    --orange-dark:#D9600A; /* тёмный оранжевый — там, где нужен контраст на белом */
-    --red:        #D64545; /* ошибки */
+    --orange:     #FF7A00; /* яркий акцент — заголовки, теги, обязательные поля */
+    --orange-dark:#D9600A; /* приглушённый оранжевый — про запас */
+    --on-lime:    #1A1A1A; /* тёмный текст/иконки поверх лаймовой заливки — не зависит от темы */
+    --red:        #FF6B6B; /* ошибки — светлее, чтобы читалось на графите */
     --font-d:  'Bebas Neue', sans-serif;
     --font-b:  'Inter', sans-serif;
     --ease:    cubic-bezier(0.4, 0, 0.2, 1);
@@ -48,7 +49,7 @@
     overflow-x: hidden;
   }
 
-  /* шум убран — на светлом фоне он не нужен, оставляем страницу чистой */
+  /* декоративный шум отключён, чтобы не перегружать графитовый фон */
   .noise { display: none; }
 
   .page {
@@ -85,7 +86,7 @@
     font-weight: 700;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: var(--orange-dark);
+    color: var(--orange);
     margin-bottom: 16px;
   }
 
@@ -100,7 +101,7 @@
 
   .hero__title-accent {
     color: transparent;
-    -webkit-text-stroke: 2px var(--orange-dark);
+    -webkit-text-stroke: 2px var(--orange);
   }
 
   .hero__subtitle {
@@ -142,7 +143,7 @@
     margin-bottom: 20px;
   }
 
-  .required { color: var(--orange-dark); }
+  .required { color: var(--orange); }
 
   /* ===== CAMPS GRID (карточки-чекбоксы) ===== */
   .camps-section { margin-bottom: 40px; }
@@ -209,7 +210,7 @@
     top: 2px;
     width: 5px;
     height: 10px;
-    border: solid var(--ink);
+    border: solid var(--on-lime);
     border-width: 0 2px 2px 0;
     transform: rotate(40deg);
   }
@@ -220,7 +221,7 @@
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: var(--orange-dark);
+    color: var(--orange);
     background: rgba(255,122,0,0.12);
     border-radius: 20px;
     padding: 3px 10px;
@@ -316,7 +317,7 @@
     gap: 8px;
     width: 100%;
     background: var(--lime);
-    color: var(--ink);
+    color: var(--on-lime);
     border: none;
     font-family: var(--font-b);
     font-size: 15px;
@@ -363,7 +364,7 @@
     margin: 0 auto 24px;
     border-radius: 50%;
     background: var(--lime);
-    color: var(--ink);
+    color: var(--on-lime);
     display: flex;
     align-items: center;
     justify-content: center;
