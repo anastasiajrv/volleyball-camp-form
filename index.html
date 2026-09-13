@@ -441,7 +441,7 @@
 
     <section class="contact-section">
       <h2 class="section-title">Ваши контакты</h2>
-      <p class="section-hint">Чтобы мы могли прислать детали и держать место</p>
+      <p class="section-hint">Чтобы мы могли прислать детали</p>
 
       <div class="field" id="fieldNameWrap">
         <label for="fieldName">Имя <span class="required">*</span></label>
@@ -449,10 +449,15 @@
         <p class="field-error" id="nameError"></p>
       </div>
 
-      <div class="field" id="fieldContactWrap">
-        <label for="fieldContact">Телефон или Telegram <span class="required">*</span></label>
-        <input type="text" id="fieldContact" name="contact" placeholder="+7 999 123-45-67 или @username" autocomplete="tel" />
-        <p class="field-error" id="contactError"></p>
+      <div class="field" id="fieldPhoneWrap">
+        <label for="fieldPhone">Телефон <span class="required">*</span></label>
+        <input type="tel" id="fieldPhone" name="phone" placeholder="+7 999 123-45-67" autocomplete="tel" />
+        <p class="field-error" id="phoneError"></p>
+      </div>
+
+      <div class="field">
+        <label for="fieldMessenger">Telegram или другой удобный мессенджер</label>
+        <input type="text" id="fieldMessenger" name="messenger" placeholder="@username, WhatsApp, Viber…" />
       </div>
 
       <div class="field">
@@ -489,7 +494,8 @@
    КАК ЗАПОЛНИТЬ:
    1. Создайте Google Форму с полями:
       - Имя (короткий текст)
-      - Телефон или Telegram (короткий текст)
+      - Телефон (короткий текст)
+      - Telegram или другой мессенджер (короткий текст)
       - Город (короткий текст)
       - Комментарий (многострочный текст)
       - Какие кэмпы интересны? (тип «Флажки» / Checkboxes) —
@@ -515,11 +521,12 @@
 
     // entry-номера полей формы, вида 'entry.123456789'
     entries: {
-      name:    'entry.1111111111', // Имя
-      contact: 'entry.2222222222', // Телефон или Telegram
-      city:    'entry.3333333333', // Город
-      comment: 'entry.4444444444', // Комментарий
-      camps:   'entry.5555555555'  // Какие кэмпы интересны (Флажки) — один entry на все варианты
+      name:      'entry.1111111111', // Имя
+      phone:     'entry.2222222222', // Телефон
+      messenger: 'entry.6666666666', // Telegram или другой мессенджер
+      city:      'entry.3333333333', // Город
+      comment:   'entry.4444444444', // Комментарий
+      camps:     'entry.5555555555'  // Какие кэмпы интересны (Флажки) — один entry на все варианты
     },
 
     // Список кэмпов — карточки на странице генерируются из этого массива.
@@ -662,21 +669,23 @@
 
   // Убираем ошибку с поля, как только человек начал его заполнять
   document.getElementById('fieldName').addEventListener('input', () => hideFieldError('fieldNameWrap', 'nameError'));
-  document.getElementById('fieldContact').addEventListener('input', () => hideFieldError('fieldContactWrap', 'contactError'));
+  document.getElementById('fieldPhone').addEventListener('input', () => hideFieldError('fieldPhoneWrap', 'phoneError'));
 
   async function onSubmit(e) {
     e.preventDefault();
     hideSubmitError();
 
-    const nameEl    = document.getElementById('fieldName');
-    const contactEl = document.getElementById('fieldContact');
-    const cityEl    = document.getElementById('fieldCity');
-    const commentEl = document.getElementById('fieldComment');
+    const nameEl      = document.getElementById('fieldName');
+    const phoneEl      = document.getElementById('fieldPhone');
+    const messengerEl = document.getElementById('fieldMessenger');
+    const cityEl      = document.getElementById('fieldCity');
+    const commentEl   = document.getElementById('fieldComment');
 
-    const name    = nameEl.value.trim();
-    const contact = contactEl.value.trim();
-    const city    = cityEl.value.trim();
-    const comment = commentEl.value.trim();
+    const name      = nameEl.value.trim();
+    const phone      = phoneEl.value.trim();
+    const messenger = messengerEl.value.trim();
+    const city      = cityEl.value.trim();
+    const comment   = commentEl.value.trim();
     const selectedCamps = Array.from(
       campsGrid.querySelectorAll('.camp-card__input:checked')
     ).map((el) => el.value);
@@ -690,11 +699,11 @@
       hideFieldError('fieldNameWrap', 'nameError');
     }
 
-    if (!contact) {
-      showFieldError('fieldContactWrap', 'contactError', 'Укажите телефон или Telegram, чтобы мы могли с вами связаться');
+    if (!phone) {
+      showFieldError('fieldPhoneWrap', 'phoneError', 'Укажите телефон, чтобы мы могли с вами связаться');
       valid = false;
     } else {
-      hideFieldError('fieldContactWrap', 'contactError');
+      hideFieldError('fieldPhoneWrap', 'phoneError');
     }
 
     if (selectedCamps.length === 0) {
@@ -716,7 +725,8 @@
 
     const body = new URLSearchParams();
     body.append(CONFIG.entries.name, name);
-    body.append(CONFIG.entries.contact, contact);
+    body.append(CONFIG.entries.phone, phone);
+    if (messenger) body.append(CONFIG.entries.messenger, messenger);
     if (city) body.append(CONFIG.entries.city, city);
     if (comment) body.append(CONFIG.entries.comment, comment);
     // для чекбоксов добавляем по одному параметру с тем же entry-именем на каждый выбранный кэмп
