@@ -167,15 +167,16 @@
     flex-direction: column;
     gap: 6px;
     background: var(--panel);
-    border: 1px solid var(--line);
+    border: 1px solid rgba(191,255,0,0.4);
     border-radius: var(--r);
     padding: 18px 18px 18px 44px;
     cursor: pointer;
-    transition: border-color 0.2s var(--ease), background 0.2s var(--ease), transform 0.15s var(--ease);
+    transition: border-color 0.2s var(--ease), background 0.2s var(--ease), box-shadow 0.2s var(--ease), transform 0.15s var(--ease);
   }
 
   .camp-card:hover {
-    border-color: var(--lime-dark);
+    border-color: var(--lime);
+    box-shadow: 0 0 0 1px rgba(191,255,0,0.25), 0 0 22px rgba(191,255,0,0.35);
     transform: translateY(-2px);
   }
 
