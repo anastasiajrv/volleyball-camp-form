@@ -474,8 +474,8 @@
       <p class="section-hint">Чтобы мы могли прислать детали</p>
 
       <div class="field" id="fieldNameWrap">
-        <label for="fieldName">Имя <span class="required">*</span></label>
-        <input type="text" id="fieldName" name="name" placeholder="Как вас зовут?" autocomplete="name" />
+        <label for="fieldName">Имя и фамилия <span class="required">*</span></label>
+        <input type="text" id="fieldName" name="name" placeholder="Например, Иван Иванов" autocomplete="name" />
         <p class="field-error" id="nameError"></p>
       </div>
 
@@ -719,7 +719,7 @@
     let valid = true;
 
     if (!name) {
-      showFieldError('fieldNameWrap', 'nameError', 'Пожалуйста, укажите ваше имя');
+      showFieldError('fieldNameWrap', 'nameError', 'Пожалуйста, укажите имя и фамилию');
       valid = false;
     } else {
       hideFieldError('fieldNameWrap', 'nameError');
