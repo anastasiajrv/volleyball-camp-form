@@ -541,36 +541,42 @@
     camps: [
       {
         value: 'Вьетнам, Дананг, 13–24 февраля',
+        sheetName: 'Вьетнам',
         title: 'Дананг, Вьетнам',
         meta: '13 февраля – 24 февраля',
         price: ''
       },
       {
         value: 'Таиланд, Пхукет, 1 смена, 27 февраля – 10 марта',
+        sheetName: 'Таиланд 1 смена',
         title: 'Пхукет, Таиланд · 1 смена',
         meta: '27 февраля – 10 марта',
         price: ''
       },
       {
         value: 'Таиланд, Пхукет, 2 смена, 13–24 марта',
+        sheetName: 'Таиланд 2 смена',
         title: 'Пхукет, Таиланд · 2 смена',
         meta: '13–24 марта',
         price: ''
       },
       {
         value: 'Турция, Сиде, майские праздники 1–10 мая',
+        sheetName: 'Турция',
         title: 'Сиде, Турция',
         meta: '1–10 мая',
         price: ''
       },
       {
         value: 'Зеленоградск, 31 июля – 8 августа',
+        sheetName: 'Зеленоградск',
         title: 'Зеленоградск',
         meta: '31 июля – 8 августа',
         price: ''
       },
       {
         value: 'Волейбольное путешествие, новая страна, 11–25 сентября',
+        sheetName: 'Новая страна',
         title: 'Волейбольное путешествие — новая страна',
         meta: '11–25 сентября',
         price: '',
@@ -578,12 +584,14 @@
       },
       {
         value: 'Сочи, Спорт Инн, 2–10 октября',
+        sheetName: 'Сочи',
         title: 'Сочи · Спорт Инн',
         meta: '2–10 октября',
         price: ''
       },
       {
         value: 'Волейбольное путешествие на Бали 3.0, 6–21 ноября',
+        sheetName: 'Бали 3.0',
         kicker: 'Волейбольное путешествие',
         title: 'Бали 3.0',
         meta: '6–21 ноября · Индонезия',
@@ -687,9 +695,11 @@
     const messenger = messengerEl.value.trim();
     const city      = cityEl.value.trim();
     const comment   = commentEl.value.trim();
-    const selectedCamps = Array.from(
+    const selectedValues = Array.from(
       campsGrid.querySelectorAll('.camp-card__input:checked')
     ).map((el) => el.value);
+    // достаём полные записи кэмпов (title + sheetName) по выбранным значениям
+    const selectedCamps = CONFIG.camps.filter((camp) => selectedValues.includes(camp.value));
 
     let valid = true;
 
@@ -724,20 +734,23 @@
     submitBtn.disabled = true;
     submitBtn.textContent = 'Отправляем...';
 
-    const body = new URLSearchParams();
-    body.append(CONFIG.entries.name, name);
-    body.append(CONFIG.entries.phone, phone);
-    if (messenger) body.append(CONFIG.entries.messenger, messenger);
-    if (city) body.append(CONFIG.entries.city, city);
-    if (comment) body.append(CONFIG.entries.comment, comment);
-    // для чекбоксов добавляем по одному параметру с тем же entry-именем на каждый выбранный кэмп
-    selectedCamps.forEach((value) => body.append(CONFIG.entries.camps, value));
+    // payload уходит в Apps Script одним JSON — он сам разложит заявку
+    // по вкладке каждого выбранного кэмпа + в сводную вкладку "Все заявки"
+    const payload = {
+      name,
+      phone,
+      messenger,
+      city,
+      comment,
+      camps: selectedCamps.map((camp) => ({ title: camp.title, sheetName: camp.sheetName }))
+    };
 
     try {
-      await fetch(`https://docs.google.com/forms/d/e/${CONFIG.formId}/formResponse`, {
+      await fetch(CONFIG.scriptUrl, {
         method: 'POST',
-        mode: 'no-cors', // ответ Google Формы нельзя прочитать — это ожидаемо
-        body
+        mode: 'no-cors', // ответ Apps Script нельзя прочитать в режиме no-cors — это ожидаемо
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
       });
       // в режиме no-cors успешный fetch не значит, что мы видели статус ответа,
       // но раз запрос ушёл без сетевой ошибки — считаем отправку успешной
