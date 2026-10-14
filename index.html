@@ -187,6 +187,24 @@
     box-shadow: 0 8px 24px rgba(191,255,0,0.18);
   }
 
+  /* анкета по этому кэмпу закрыта — карточку видно (для информации),
+     но выбрать нельзя: чекбокс disabled, без hover-эффектов, слегка притушена */
+  .camp-card.is-closed {
+    cursor: default;
+    opacity: 0.6;
+    border-color: var(--line);
+  }
+
+  .camp-card.is-closed:hover {
+    border-color: var(--line);
+    box-shadow: none;
+    transform: none;
+  }
+
+  .camp-card.is-closed .camp-card__mark {
+    opacity: 0.5;
+  }
+
   .camp-card__input {
     position: absolute;
     opacity: 0;
@@ -237,6 +255,13 @@
     border-radius: 20px;
     padding: 3px 10px;
     box-shadow: 0 0 14px rgba(191,255,0,0.45);
+  }
+
+  /* плашка «Набор открыт» у закрытых для анкеты кэмпов — оранжевая вместо лаймовой */
+  .camp-card__badge--closed {
+    color: var(--ink);
+    background: var(--orange);
+    box-shadow: 0 0 14px rgba(255,122,0,0.45);
   }
 
   /* резервируем место под плашку, чтобы длинный заголовок не наезжал на неё */
@@ -550,13 +575,17 @@
     //   или 'Новая страна' под 'Путешествие'). kickerColor — её цвет, сейчас поддерживается 'lime'.
     // titleAccent — необязательная часть названия рядом с title, выделенная оранжевым (например '3.0' после 'Бали').
     // titleColor — необязательный цвет ВСЕГО title целиком, сейчас поддерживается 'lime' (ярко-зелёный).
+    // closed — true, если анкета по этому кэмпу закрыта (например уже идёт набор).
+    //   Карточка остаётся видна, но чекбокс заблокирован и на карточке
+    //   появляется плашка «Набор открыт».
     camps: [
       {
         value: 'Вьетнам, Дананг, 13–24 февраля',
         sheetName: 'Вьетнам',
         title: 'Дананг, Вьетнам',
         meta: '13 февраля – 24 февраля 2027',
-        price: ''
+        price: '',
+        closed: true // анкета закрыта, идёт набор — карточку видно, но выбрать нельзя
       },
       {
         value: 'Таиланд, Пхукет, 1 смена, 27 февраля – 10 марта',
@@ -570,7 +599,8 @@
         sheetName: 'Таиланд 2 смена',
         title: 'Пхукет, Таиланд · 2 смена',
         meta: '13–24 марта 2027',
-        price: ''
+        price: '',
+        closed: true // анкета закрыта, идёт набор — карточку видно, но выбрать нельзя
       },
       {
         value: 'Турция, Сиде, майские праздники 1–10 мая',
@@ -633,17 +663,20 @@
 
   // Рисуем карточки кэмпов из CONFIG.camps
   function renderCamps() {
-    campsGrid.innerHTML = CONFIG.camps.map((camp, i) => `
-      <label class="camp-card${camp.badge ? ' has-badge' : ''}" data-index="${i}">
-        <input type="checkbox" class="camp-card__input" value="${escapeHtml(camp.value)}" />
+    campsGrid.innerHTML = CONFIG.camps.map((camp, i) => {
+      const showBadge = camp.closed ? 'Набор открыт' : camp.badge;
+      return `
+      <label class="camp-card${showBadge ? ' has-badge' : ''}${camp.closed ? ' is-closed' : ''}" data-index="${i}">
+        <input type="checkbox" class="camp-card__input" value="${escapeHtml(camp.value)}" ${camp.closed ? 'disabled' : ''} />
         <span class="camp-card__mark" aria-hidden="true"></span>
-        ${camp.badge ? `<span class="camp-card__badge">${escapeHtml(camp.badge)}</span>` : ''}
+        ${showBadge ? `<span class="camp-card__badge${camp.closed ? ' camp-card__badge--closed' : ''}">${escapeHtml(showBadge)}</span>` : ''}
         <span class="camp-card__title${camp.titleColor ? ` camp-card__title--${camp.titleColor}` : ''}">${escapeHtml(camp.title)}${camp.titleAccent ? ` <span class="camp-card__title-accent">${escapeHtml(camp.titleAccent)}</span>` : ''}</span>
         ${camp.kicker ? `<span class="camp-card__kicker${camp.kickerColor ? ` camp-card__kicker--${camp.kickerColor}` : ''}">${escapeHtml(camp.kicker)}</span>` : ''}
         <span class="camp-card__meta">${escapeHtml(camp.meta)}</span>
         ${camp.price ? `<span class="camp-card__price">${escapeHtml(camp.price)}</span>` : ''}
       </label>
-    `).join('');
+    `;
+    }).join('');
 
     // подсветка выбранной карточки + очистка ошибки при выборе кэмпа
     campsGrid.querySelectorAll('.camp-card').forEach((card) => {
