@@ -205,6 +205,37 @@
     opacity: 0.5;
   }
 
+  /* закрытая анкета, но ЕСТЬ ссылка на запись — карточка становится призывом
+     к действию: полная яркость, оранжевая обводка, кликабельна целиком */
+  .camp-card.is-closed.is-register {
+    cursor: pointer;
+    opacity: 1;
+    border-color: rgba(255,122,0,0.5);
+    text-decoration: none;
+    padding-left: 18px; /* нет чекбокса слева — обычный отступ вместо увеличенного */
+  }
+
+  .camp-card.is-closed.is-register:hover {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 1px rgba(255,122,0,0.25), 0 0 22px rgba(255,122,0,0.35);
+    transform: translateY(-2px);
+  }
+
+  .camp-card__register-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    align-self: flex-start;
+    margin-top: 6px;
+    font-family: var(--font-b);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--on-lime);
+    background: var(--orange);
+    border-radius: 8px;
+    padding: 8px 14px;
+  }
+
   .camp-card__input {
     position: absolute;
     opacity: 0;
@@ -576,8 +607,12 @@
     // titleAccent — необязательная часть названия рядом с title, выделенная оранжевым (например '3.0' после 'Бали').
     // titleColor — необязательный цвет ВСЕГО title целиком, сейчас поддерживается 'lime' (ярко-зелёный).
     // closed — true, если анкета по этому кэмпу закрыта (например уже идёт набор).
-    //   Карточка остаётся видна, но чекбокс заблокирован и на карточке
-    //   появляется плашка «Набор открыт».
+    //   Карточка остаётся видна, чекбокс заблокирован, на карточке появляется
+    //   плашка «Набор открыт».
+    // registerUrl — если задан ВМЕСТЕ с closed:true и начинается с http(s)://,
+    //   карточка превращается в кликабельную ссылку с кнопкой «Записаться →»
+    //   вместо чекбокса (ведёт на вашу страницу/форму реальной записи).
+    //   Без корректной ссылки карточка остаётся просто закрытой (безопасно).
     camps: [
       {
         value: 'Вьетнам, Дананг, 13–24 февраля',
@@ -585,7 +620,8 @@
         title: 'Дананг, Вьетнам',
         meta: '13 февраля – 24 февраля 2027',
         price: '',
-        closed: true // анкета закрыта, идёт набор — карточку видно, но выбрать нельзя
+        closed: true, // анкета закрыта, идёт набор — карточку видно, но выбрать нельзя
+        registerUrl: 'ВСТАВЬТЕ_ССЫЛКУ_НА_ЗАПИСЬ' // карточка станет кнопкой «Записаться →» на эту ссылку
       },
       {
         value: 'Таиланд, Пхукет, 1 смена, 27 февраля – 10 марта',
@@ -600,7 +636,8 @@
         title: 'Пхукет, Таиланд · 2 смена',
         meta: '13–24 марта 2027',
         price: '',
-        closed: true // анкета закрыта, идёт набор — карточку видно, но выбрать нельзя
+        closed: true, // анкета закрыта, идёт набор — карточку видно, но выбрать нельзя
+        registerUrl: 'ВСТАВЬТЕ_ССЫЛКУ_НА_ЗАПИСЬ' // карточка станет кнопкой «Записаться →» на эту ссылку
       },
       {
         value: 'Турция, Сиде, майские праздники 1–10 мая',
@@ -665,15 +702,32 @@
   function renderCamps() {
     campsGrid.innerHTML = CONFIG.camps.map((camp, i) => {
       const showBadge = camp.closed ? 'Набор открыт' : camp.badge;
-      return `
-      <label class="camp-card${showBadge ? ' has-badge' : ''}${camp.closed ? ' is-closed' : ''}" data-index="${i}">
-        <input type="checkbox" class="camp-card__input" value="${escapeHtml(camp.value)}" ${camp.closed ? 'disabled' : ''} />
-        <span class="camp-card__mark" aria-hidden="true"></span>
+      const infoHtml = `
         ${showBadge ? `<span class="camp-card__badge${camp.closed ? ' camp-card__badge--closed' : ''}">${escapeHtml(showBadge)}</span>` : ''}
         <span class="camp-card__title${camp.titleColor ? ` camp-card__title--${camp.titleColor}` : ''}">${escapeHtml(camp.title)}${camp.titleAccent ? ` <span class="camp-card__title-accent">${escapeHtml(camp.titleAccent)}</span>` : ''}</span>
         ${camp.kicker ? `<span class="camp-card__kicker${camp.kickerColor ? ` camp-card__kicker--${camp.kickerColor}` : ''}">${escapeHtml(camp.kicker)}</span>` : ''}
         <span class="camp-card__meta">${escapeHtml(camp.meta)}</span>
         ${camp.price ? `<span class="camp-card__price">${escapeHtml(camp.price)}</span>` : ''}
+      `;
+
+      // Анкета закрыта и есть ссылка на запись — карточка становится ссылкой
+      // с кнопкой «Записаться →» вместо чекбокса.
+      const hasRegisterUrl = camp.registerUrl && /^https?:\/\//.test(camp.registerUrl);
+      if (camp.closed && hasRegisterUrl) {
+        return `
+      <a class="camp-card is-closed is-register${showBadge ? ' has-badge' : ''}"
+         href="${escapeHtml(camp.registerUrl)}" target="_blank" rel="noopener">
+        ${infoHtml}
+        <span class="camp-card__register-btn">Записаться →</span>
+      </a>
+    `;
+      }
+
+      return `
+      <label class="camp-card${showBadge ? ' has-badge' : ''}${camp.closed ? ' is-closed' : ''}" data-index="${i}">
+        <input type="checkbox" class="camp-card__input" value="${escapeHtml(camp.value)}" ${camp.closed ? 'disabled' : ''} />
+        <span class="camp-card__mark" aria-hidden="true"></span>
+        ${infoHtml}
       </label>
     `;
     }).join('');
